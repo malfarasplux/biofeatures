@@ -1,0 +1,112 @@
+[
+    {
+        "id": "64337fda.a24a7",
+        "type": "tab",
+        "label": "pyfunc BIT",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "c89d1b08.f57f48",
+        "type": "debug",
+        "z": "64337fda.a24a7",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 850,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "cd4037e7.e32fc8",
+        "type": "inject",
+        "z": "64337fda.a24a7",
+        "name": "pyJSON print",
+        "topic": "",
+        "payload": "{\"pyJSON\":true,\"type\":\"print\",\"val\":[5]}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 150,
+        "y": 200,
+        "wires": [
+            [
+                "e24563d.0275ba"
+            ]
+        ]
+    },
+    {
+        "id": "e24563d.0275ba",
+        "type": "BITalinoNode",
+        "z": "64337fda.a24a7",
+        "x": 670,
+        "y": 200,
+        "wires": [
+            [
+                "c89d1b08.f57f48"
+            ]
+        ]
+    },
+    {
+        "id": "54d1a530.1678dc",
+        "type": "inject",
+        "z": "64337fda.a24a7",
+        "name": "pyJSON stop",
+        "topic": "",
+        "payload": "{\"pyJSON\":true,\"type\":\"stop\",\"val\":[5]}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 150,
+        "y": 260,
+        "wires": [
+            [
+                "e24563d.0275ba"
+            ]
+        ]
+    },
+    {
+        "id": "c5e59a2a.b33048",
+        "type": "function",
+        "z": "64337fda.a24a7",
+        "name": "pyJSON BITalinoMAC",
+        "func": "var mac = msg.payload[\"macAddress\"]\nmsg.payload = {\n    \"pyJSON\":true,\n    \"type\":\"BITalino\",\n    \"macAddress\": mac,\n    \"val\":[5]\n    };\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 460,
+        "y": 120,
+        "wires": [
+            [
+                "e24563d.0275ba"
+            ]
+        ]
+    },
+    {
+        "id": "d849c933.7112f8",
+        "type": "inject",
+        "z": "64337fda.a24a7",
+        "name": "{\"macAddress\":\"\"}",
+        "topic": "",
+        "payload": "{\"macAddress\":\"\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "c5e59a2a.b33048"
+            ]
+        ]
+    }
+]
