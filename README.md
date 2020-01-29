@@ -11,8 +11,9 @@ get bsp features in real time
 -  https://github.com/BITalinoWorld/revolution-python-api
 -  https://www.bitalino.com  
 
-##  2. Data <a name="second"></a>
+##  2. Steps <a name="second"></a>
 https://www.plux.info  
+![Anaconda](/img/run_biofeatures.jpg)
 
 ##  3. Instructions <a name="third"></a>
 -  [Google Doc](https://docs.google.com/)  
