@@ -4,25 +4,24 @@ import time
 from bitalino import BITalino
 
 isAcquiring = 0
+data = []
 
 @node_red(category="pyfuncs")
 def BITalinoNode(node, msg):
-    global isAcquiring
+    global isAcquiring, data
 
     if msg['payload']['pyJSON'] == True:
             if msg['payload']['type']=="BITalino":
-                launch_acquisition()
-                msg = "START"
+                if msg['payload']['macAddress']!="":
+                    launch_acquisition(msg)
             elif msg['payload']['type']=="stop":
                 isAcquiring = 0
             elif msg['payload']['type']=="print":
-                msg['payload'] = isAcquiring
-                  
+                a = 1+1
     return msg
 
    
 def set_acquisition():
-    macAddress = ""
 
     # This example will collect data for 5 sec.
     running_time = 5
@@ -42,13 +41,13 @@ def set_acquisition():
 def acquire():
     device.read(nSamples)
 
-def launch_acquisition():
+def launch_acquisition(msg):
     global isAcquiring 
     isAcquiring = 1
-    macAddress = ""
+    macAddress = msg['payload']['macAddress']
 
     # This example will collect data for 5 sec.
-    running_time = 15
+    running_time = 9
         
     batteryThreshold = 30
     acqChannels = [0, 1, 2, 3, 4, 5]
@@ -65,6 +64,10 @@ def launch_acquisition():
     # Read BITalino version
     print(device.version())
 
+    # ON/OFF
+    device.trigger([1,1])
+    device.trigger([0,0])
+
     # Start Acquisition
     device.start(samplingRate, acqChannels)
 
@@ -72,11 +75,10 @@ def launch_acquisition():
     end = time.time()
     while (end - start) < running_time and isAcquiring == 1 :
         # Read samples
-        print(device.read(nSamples))
+        data = device.read(nSamples)
+        print(data)
+        msg['payload']['val']=data.tolist()
         end = time.time()
-
-    # Turn BITalino led on
-    device.trigger(digitalOutput)
         
     # Stop acquisition
     device.stop()
