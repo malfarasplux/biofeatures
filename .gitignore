@@ -1,3 +1,4 @@
 # gitignore python
 __pycache__/
+backup/
 *.pyc
