@@ -5,9 +5,9 @@ get bsp features in real time
 [2. Data](#second)  
 [3. Instructions](#third)  
 
-##  1. Challenge info <a name="first"></a>
--  https://www.plux.info  
--  http://www.org/
+##  1. Prerequisites and libraries used <a name="first"></a>
+-  https://pypi.org/project/pynodered/  
+-  https://nodered.org/  
 
 ##  2. Data <a name="second"></a>
 https://www.plux.info  
