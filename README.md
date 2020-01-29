@@ -6,8 +6,10 @@ get bsp features in real time
 [3. Instructions](#third)  
 
 ##  1. Prerequisites and libraries used <a name="first"></a>
--  https://pypi.org/project/pynodered/  
 -  https://nodered.org/  
+-  https://pypi.org/project/pynodered/  
+-  https://github.com/BITalinoWorld/revolution-python-api
+-  https://www.bitalino.com  
 
 ##  2. Data <a name="second"></a>
 https://www.plux.info  
