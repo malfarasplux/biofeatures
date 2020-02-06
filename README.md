@@ -14,7 +14,8 @@ get bsp features in real time
 ##  2. Extra tools imported <a name="second"></a>
 - https://pypi.org/project/pynodered/  
 - [pabluino MKR  mini](https://github.com/destman0/Soma-tech/blob/master/Pneumatics/pabluino_mkr/pabluino_mkr_mini/pabluino_mkr_mini.ino)  
-- [SomaBits OSC Broadcaster Server](https://github.com/p-sanches/somabits/tree/master/ServerBit/Processing/broadcasterServer)
+- [SomaBits OSC Broadcaster Server](https://github.com/p-sanches/somabits/tree/master/ServerBit/Processing/broadcasterServer)  
+- [Pyhton & Javascript Jupyter notebooks](https://jupyter.org/documentation) (see [JS tutorial](https://hackernoon.com/data-science-for-javascript-developers-2cc3fb1fbefc))  
 
 https://www.plux.info  
 ![Anaconda](/img/run_biofeatures.jpg)
