@@ -5,13 +5,17 @@ get bsp features in real time
 [2. Data](#second)  
 [3. Instructions](#third)  
 
-##  1. Prerequisites and libraries used <a name="first"></a>
--  https://nodered.org/  
--  https://pypi.org/project/pynodered/  
--  https://github.com/BITalinoWorld/revolution-python-api
--  https://www.bitalino.com  
+##  1. Prerequisites and platforms used <a name="first"></a>
+- https://nodered.org/  
+- https://www.bitalino.com  
+- https://bitalino.com/en/r-iot-kit
+- https://github.com/BITalinoWorld/revolution-python-api  
 
-##  2. Steps <a name="second"></a>
+##  2. Extra tools imported <a name="second"></a>
+- https://pypi.org/project/pynodered/  
+- [pabluino MKR  mini](https://github.com/destman0/Soma-tech/blob/master/Pneumatics/pabluino_mkr/pabluino_mkr_mini/pabluino_mkr_mini.ino)  
+- [SomaBits OSC Broadcaster Server](https://github.com/p-sanches/somabits/tree/master/ServerBit/Processing/broadcasterServer)
+
 https://www.plux.info  
 ![Anaconda](/img/run_biofeatures.jpg)
 
