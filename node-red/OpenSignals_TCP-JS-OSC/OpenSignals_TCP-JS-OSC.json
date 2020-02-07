@@ -1,0 +1,282 @@
+[
+    {
+        "id": "ca771388.72745",
+        "type": "tab",
+        "label": "OpenSignals TCP-JS-OSC",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "565e0369.69a9ec",
+        "type": "udp in",
+        "z": "ca771388.72745",
+        "name": "",
+        "iface": "",
+        "port": "8000",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "buffer",
+        "x": 100,
+        "y": 120,
+        "wires": [
+            [
+                "23250d4f.039d62"
+            ]
+        ]
+    },
+    {
+        "id": "23250d4f.039d62",
+        "type": "osc",
+        "z": "ca771388.72745",
+        "name": "",
+        "path": "",
+        "metadata": false,
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "218f8f6.c8eb27"
+            ]
+        ]
+    },
+    {
+        "id": "fc89d313.e9453",
+        "type": "comment",
+        "z": "ca771388.72745",
+        "name": "Receiving OS TCP JSON-OSC msg on UDP port 8000",
+        "info": "",
+        "x": 240,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "218f8f6.c8eb27",
+        "type": "function",
+        "z": "ca771388.72745",
+        "name": "pyData",
+        "func": "//JSON to OSC array is [nSeq, I1, I2, O1, O2, Ax ...]\n//example using [nSeq, I1, I2, O1, O2, A5, A6]\nvar v = parseFloat(msg.payload[6])\nmsg = {\n    \"payload\": {\n        \"value\": parseInt(v)+50\n    }\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 180,
+        "wires": [
+            [
+                "c39e8f22.cbd11",
+                "f83d1437.2da828",
+                "6890172c.a8d148"
+            ]
+        ]
+    },
+    {
+        "id": "50c1e97b.172868",
+        "type": "debug",
+        "z": "ca771388.72745",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 750,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "c39e8f22.cbd11",
+        "type": "function",
+        "z": "ca771388.72745",
+        "name": "MIDI ON",
+        "func": "var v = parseInt(msg.payload.value)\nmsg = {\n    \"payload\": [144, v, 120]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 480,
+        "y": 160,
+        "wires": [
+            [
+                "50c1e97b.172868",
+                "f39cd39.be8c23"
+            ]
+        ]
+    },
+    {
+        "id": "f39cd39.be8c23",
+        "type": "midi out",
+        "z": "ca771388.72745",
+        "name": "",
+        "midiport": "1",
+        "x": 760,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "ec965a40.7665b8",
+        "type": "delay",
+        "z": "ca771388.72745",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 670,
+        "y": 360,
+        "wires": [
+            [
+                "f39cd39.be8c23"
+            ]
+        ]
+    },
+    {
+        "id": "f83d1437.2da828",
+        "type": "function",
+        "z": "ca771388.72745",
+        "name": "MIDI OFF",
+        "func": "var v = parseInt(msg.payload.value)\nmsg = {\n    \"payload\": [128, v, 120]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 480,
+        "y": 200,
+        "wires": [
+            [
+                "50c1e97b.172868",
+                "ec965a40.7665b8"
+            ]
+        ]
+    },
+    {
+        "id": "90766d0a.29dbb",
+        "type": "function",
+        "z": "ca771388.72745",
+        "name": "MIDI ON",
+        "func": "var v = parseInt(msg.payload)\nmsg = {\n    \"payload\": [144, v, 120]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 260,
+        "y": 480,
+        "wires": [
+            [
+                "f39cd39.be8c23"
+            ]
+        ]
+    },
+    {
+        "id": "18d2d4e2.1a60db",
+        "type": "function",
+        "z": "ca771388.72745",
+        "name": "MIDI OFF",
+        "func": "var v = parseInt(msg.payload)\nmsg = {\n    \"payload\": [128, v, 120]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 260,
+        "y": 520,
+        "wires": [
+            [
+                "ec965a40.7665b8"
+            ]
+        ]
+    },
+    {
+        "id": "e514f8db.7af5c8",
+        "type": "inject",
+        "z": "ca771388.72745",
+        "name": "",
+        "topic": "",
+        "payload": "60",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "90766d0a.29dbb",
+                "18d2d4e2.1a60db"
+            ]
+        ]
+    },
+    {
+        "id": "a31e7bed.e1ce78",
+        "type": "inject",
+        "z": "ca771388.72745",
+        "name": "",
+        "topic": "",
+        "payload": "STOP ALL",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "x": 120,
+        "y": 360,
+        "wires": [
+            [
+                "8e02b454.08bad8"
+            ]
+        ]
+    },
+    {
+        "id": "8e02b454.08bad8",
+        "type": "trigger",
+        "z": "ca771388.72745",
+        "op1": "[176,123, 0]",
+        "op2": "[176,123, 0]",
+        "op1type": "json",
+        "op2type": "json",
+        "duration": "100",
+        "extend": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "name": "",
+        "x": 320,
+        "y": 360,
+        "wires": [
+            [
+                "f39cd39.be8c23"
+            ]
+        ]
+    },
+    {
+        "id": "ebeb9b79.c19328",
+        "type": "comment",
+        "z": "ca771388.72745",
+        "name": "Stop MIDI messages",
+        "info": "",
+        "x": 130,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "380370db.f96b9",
+        "type": "comment",
+        "z": "ca771388.72745",
+        "name": "Single note test",
+        "info": "",
+        "x": 120,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "6890172c.a8d148",
+        "type": "debug",
+        "z": "ca771388.72745",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.value",
+        "targetType": "msg",
+        "x": 510,
+        "y": 100,
+        "wires": []
+    }
+]
