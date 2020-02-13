@@ -1,8 +1,8 @@
 import biosppy.signals.resp as resp
+import biosignalsnotebooks as bsnb
 from sklearn.linear_model import LinearRegression
 import numpy as np
 import pyhrv
-from ecgdetectors import Detectors
 
 def r_peak_intervals(data, sampling_rate):
     """ Calculates R-to-R peak intervals from raw ECG signal
@@ -15,9 +15,10 @@ def r_peak_intervals(data, sampling_rate):
     ----------
     r_intervals : R-to-R peak intervals in milliseconds
     """
-    detector = Detectors(sampling_rate)
-    peaks = detector.swt_detector(data)
-    r_intervals = [(1000 / sampling_rate) * (peaks[i] - peaks[i - 1]) for i in range(1, len(peaks))]
+    peaks = bsnb.detect_r_peaks(data, sampling_rate, time_units=True, plot_result=False)
+
+    intervals = [peaks[0][i] - peaks[0][i-1] for i in range(1,len(peaks[0]))]
+    r_intervals = (np.array(intervals) * 1000).astype(int)
 
     return r_intervals
 
