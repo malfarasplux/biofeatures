@@ -123,8 +123,7 @@ def lastpoint_linreg(data, samples = 100, sampling_rate = 200):
 
 
 def resp_features(resp_intervals, is_inhalation, sampling_rate):
-    """Calculates a linear regression a determines a hold flag based on slope
-    Parameters
+    """Calculates respiration features from inhale/exhale intervals
     ----------
     resp_intervals : inhalation and exhalation intervals
 
