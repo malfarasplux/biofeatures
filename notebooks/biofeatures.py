@@ -4,6 +4,9 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 import threading
 
+def set_data(B):
+    global resp_data
+    B.data = resp_data[-B.buffer_length:]
 
 # Breathing
 class breathing(object):
@@ -22,23 +25,25 @@ class breathing(object):
         self.feature_names = -1
         self.WU = False
         self.count = 0
+        self.update_data_flag = True
 
     def update_loop(self):
-        global resp_data
         #TODO pass data as argument instead
         """
         Launches a recursive loop to update
         """
         self.timerT = threading.Timer(0.5, self.update_loop)
-        if self.updateloopflag:
-    
-            self.count = self.count + 1
-            self.timerT.start()
-            self.data = resp_data[-self.buffer_length:]
-            self.resp_intervals()
-            self.resp_features()
-            print(self.features)
-            
+#        if self.updateloopflag:
+
+        self.count = self.count + 1
+        self.timerT.start()
+#        self.data = resp_data[-self.buffer_length:]
+#        if self.update_data_flag:
+#            set_data(self)
+        self.resp_intervals()
+        self.resp_features()
+        print(self.features)
+        
     def resp_intervals(self, last_breath = False):
         """Calculates respiration intervals and indicates inhale/exhale
         Parameters
