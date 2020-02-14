@@ -39,7 +39,7 @@ class breathing(object):
         self.timerT.start()
 #        self.data = resp_data[-self.buffer_length:]
 #        if self.update_data_flag:
-#            set_data(self)
+#            set_data(self) 
         self.resp_intervals()
         self.resp_features()
         print(self.features)
