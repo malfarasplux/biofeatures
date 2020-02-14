@@ -28,7 +28,7 @@ class breathing(object):
         self.update_data_flag = True
 
     def update_loop(self):
-        #TODO pass data as argument instead
+        #TODO try/except
         """
         Launches a recursive loop to update
         """
