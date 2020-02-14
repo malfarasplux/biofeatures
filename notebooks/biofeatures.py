@@ -29,7 +29,7 @@ class breathing(object):
         """
         Launches a recursive loop to update
         """
-        self.timerT = threading.Timer(0.5, self.updateloop)
+        self.timerT = threading.Timer(0.5, self.update_loop)
         if self.updateloopflag:
     
             self.count = self.count + 1
