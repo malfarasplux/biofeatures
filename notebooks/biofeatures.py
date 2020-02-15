@@ -15,36 +15,50 @@ class breathing(object):
         self.buffer_length = buffer_length 
         self.srate = srate
         self.bits = bits
+        
+        # Feature data
+        self.data = data
         self.interval_lengths = -1
         self.interval_breathe_in = -1
         self.resp_rate = -1
         self.resp_changes = -1
         self.resp_amplitude = 0
-        self.data = data
         self.filtered = -1
         self.feature_names = -1
-        self.WU = False
-        self.count = 0
+        
+        # Flags
+        self.WU = False #TODO remove
+        self.is_warmed_up = False
         self.update_data_flag = True
+        
+        # Debug
+        self.count_updates = 0
 
     def update_loop(self):
-        #TODO try/except
         """
         Launches a recursive loop to update
         """
-        self.timerT = threading.Timer(0.5, self.update_loop)
-#        if self.updateloopflag:
+        if self.update_data_flag:
+            self.timerT = threading.Timer(0.5, self.update_loop)
 
-        self.count = self.count + 1
+        self.count_updates = self.count_updates + 1
         self.timerT.start()
-#        self.data = resp_data[-self.buffer_length:]
-#        if self.update_data_flag:
-#            set_data(self) 
-        self.resp_intervals()
-        self.resp_features()
-        print(self.features)
+        data = self.data
+
+        try:
+            self.resp_intervals(data, last_breath=False)
+            self.resp_features()
+            print(self.features)
+            self.calc_amplitudes(data)
+        except:
+            print("RESP ERROR")
+            raise
+
         
-    def resp_intervals(self, last_breath = False):
+    def set_data(self, data):
+        self.data = data
+        
+    def resp_intervals(self, data, last_breath = False):
         """Calculates respiration intervals and indicates inhale/exhale
         Parameters
         ----------
@@ -60,7 +74,7 @@ class breathing(object):
     
         interval_breathe_in: list of breathe in True/False flags
         """
-        processed_data = resp.resp(signal=self.data, sampling_rate=self.srate, show=False)
+        processed_data = resp.resp(signal=data, sampling_rate=self.srate, show=False)
         filtered_signal = processed_data[1]
         inst_resp_rate = processed_data[4]
         self.filtered = filtered_signal
@@ -137,51 +151,56 @@ class breathing(object):
     
         in_out_ratio = breathe_in_len/breathe_out_len
     
-        features = {'breath_avg_len': avg_breath, 'inhale_duration': breathe_in_len / sampling_rate,
-                    'exhale_duration': breathe_out_len / sampling_rate, 'inhale_exhale_ratio': in_out_ratio}
+        features = {'breath_avg_len': round(avg_breath,2),
+                    'inhale_duration': round(breathe_in_len / sampling_rate,2) ,
+                    'exhale_duration': round(breathe_out_len / sampling_rate,2),
+                    'inhale_exhale_ratio': round(in_out_ratio,2)}
     
         self.feature_names = features.keys()
         self.features = features
 
-# Amplitudes
-def calc_amplitudes(self):
-    """Calculates respiration intervals and indicates inhale/exhale
-    Parameters
-    ----------
-    data : breathing signal to be processed
-    
-    last_breath : flag that indicates whether single/mult breath analysis is requested
-    
-    Returns
-    ----------
-    
-    amplitude: list of amplitude
-    """
-    if len(resp_changes)>1:
-        self.resp_amplitude = np.diff(np.append([0],data[self.resp_changes]))[1:-1]
-    else:
-        self.resp_amplitude = 0
-
-# Generic
-        
-    def area_fraction(self):
-        """Calculates the area fraction covered by the data
+    # Amplitudes
+    def calc_amplitudes(self, data):
+        # TODO stop update data between interval and amplitude
+        """Calculates respiration intervals and indicates inhale/exhale
         Parameters
         ----------
-        data : input signal to be processed
-            
-        bits : number of resolution bits (digital) R-IoT=12, BITalino = 10, IMU/bsp = 16
+        data : breathing signal to be processed
+        
+        last_breath : flag that indicates whether single/mult breath analysis is requested
         
         Returns
         ----------
-        fraction of area covered by the signal
-    
         
+        amplitude: list of amplitude
         """
-        data = self.data, 
-        bits = self.bits
-        frac = np.mean(np.absolute(data))/(2**bits) 
-        return frac
+        data = np.array(data)
+        if len(self.resp_changes)>1:
+            self.resp_amplitude = np.diff(np.append([0],data[self.resp_changes]))[1:-1]
+        else:
+            self.resp_amplitude = 0
+
+# Generic
+#########
+    
+def area_fraction(self):
+    """Calculates the area fraction covered by the data
+    Parameters
+    ----------
+    data : input signal to be processed
+        
+    bits : number of resolution bits (digital) R-IoT=12, BITalino = 10, IMU/bsp = 16
+    
+    Returns
+    ----------
+    fraction of area covered by the signal
+
+    
+    """
+    data = self.data, 
+    bits = self.bits
+    frac = np.mean(np.absolute(data))/(2**bits) 
+    return frac
 
 
 def lastpoint_linreg(data, samples = 100, sampling_rate = 200):
