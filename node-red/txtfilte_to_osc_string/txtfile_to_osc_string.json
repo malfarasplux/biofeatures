@@ -1,0 +1,12 @@
+[
+    {
+        "id": "26d09471.ddec9c",
+        "type": "comment",
+        "z": "748a756f.ff89ac",
+        "name": "txtfile to OSC string",
+        "info": "",
+        "x": 130,
+        "y": 60,
+        "wires": []
+    }
+]
