@@ -11,10 +11,10 @@ class breathing(object):
     """
 
     def __init__(self, data, buffer_length = 1000, srate = 200, bits = 12):
-        self.buffer_length = buffer_length 
+        self.buffer_length = buffer_length
         self.srate = srate
         self.bits = bits
-        
+
         # Feature data
         self.data = data
         self.interval_lengths = -1
@@ -24,11 +24,11 @@ class breathing(object):
         self.resp_amplitude = 0
         self.filtered = -1
         self.feature_names = -1
-        
+
         # Flags
         self.is_warmed_up = False
         self.update_data_flag = True
-        
+
         # Debug
         self.count_updates = 0
 
@@ -52,27 +52,27 @@ class breathing(object):
             print("RESP ERROR")
             raise
 
-        
+
     def set_data(self, data):
         """
         Stores data into the class attribute
         """
         self.data = data
-        
+
     def resp_intervals(self, data, last_breath = False):
         """Calculates respiration intervals and indicates inhale/exhale
         Parameters
         ----------
         data : breathing signal to be processed
-    
+
         sampling_rate: sampling rate of breathing signal
-    
+
         last_breath : flag that indicates whether single/mult breath analysis is requested
-    
+
         Returns
         ----------
         interval_lengths: list of breathing interval lenghts
-    
+
         interval_breathe_in: list of breathe in True/False flags
         """
         processed_data = resp.resp(signal=data, sampling_rate=self.srate, show=False)
@@ -80,27 +80,27 @@ class breathing(object):
         inst_resp_rate = processed_data[4]
         self.filtered = filtered_signal
         self.resp_rate = inst_resp_rate
-        
-    
+
+
         signal_diff = np.diff(filtered_signal)
         signal_signum = signal_diff > 0
-    
+
         resp_changes = np.append(np.where(signal_signum[:-1] != signal_signum[1:])[0], [len(signal_signum) - 1])
         self.resp_changes = resp_changes
-    
+
         if not last_breath:
-    
+
             resp_intervals = np.append([0], resp_changes)
             interval_lengths = np.diff(resp_intervals)
             interval_breathe_in = [signal_signum[i] for i in resp_changes]
             self.interval_lengths, self.interval_breathe_in = interval_lengths, interval_breathe_in
-    
+
         else:
             if len(resp_changes) > 1:
                 last_interval = resp_changes[-1] - resp_changes[-2]
             else:
                 last_interval = resp_changes[-1]
-    
+
             self.interval_lengths, self.interval_breathe_in = last_interval, signal_signum[resp_changes[-1]]
 
 
@@ -108,13 +108,13 @@ class breathing(object):
         """Calculates respiration features from inhale/exhale intervals
         ----------
         resp_intervals : inhalation and exhalation intervals
-    
+
         is_inhalation : array of boolean values indicating the kind of breathing in resp_intervals
                         True -> inhalation
                         False -> exhalation
-    
+
         sampling_rate : sampling rate of respiration sensor
-    
+
         Returns
         ----------
         features: dictionary containing the calculated features
@@ -129,7 +129,7 @@ class breathing(object):
         # calculate the average breath length in s
         breath_lengths = []
         i = 0
-    
+
         while i < len(resp_intervals):
             if not is_inhalation[i] or i == len(resp_intervals) - 1 :
                 breath_lengths.append(resp_intervals[i])
@@ -137,26 +137,26 @@ class breathing(object):
             else:
                 breath_lengths.append(resp_intervals[i] + resp_intervals[i + 1])
                 i = i + 2
-    
+
         avg_breath = np.average(breath_lengths) / sampling_rate
-    
+
         # calculate the inhalation/exhalation ratio
         breathe_in_len = 0
         breathe_out_len = 0
-    
+
         for i in range(len(resp_intervals)):
             if is_inhalation[i]:
                 breathe_in_len += resp_intervals[i]
             else:
                 breathe_out_len += resp_intervals[i]
-    
+
         in_out_ratio = breathe_in_len/breathe_out_len
-    
+
         features = {'breath_avg_len': round(avg_breath,2),
                     'inhale_duration': round(breathe_in_len / sampling_rate,2) ,
                     'exhale_duration': round(breathe_out_len / sampling_rate,2),
                     'inhale_exhale_ratio': round(in_out_ratio,2)}
-    
+
         self.feature_names = features.keys()
         self.features = features
 
@@ -167,12 +167,12 @@ class breathing(object):
         Parameters
         ----------
         data : breathing signal to be processed
-        
+
         last_breath : flag that indicates whether single/mult breath analysis is requested
-        
+
         Returns
         ----------
-        
+
         amplitude: list of amplitude
         """
         data = np.array(data)
@@ -183,24 +183,24 @@ class breathing(object):
 
 # Generic
 #########
-    
+
 def area_fraction(self):
     """Calculates the area fraction covered by the data
     Parameters
     ----------
     data : input signal to be processed
-        
+
     bits : number of resolution bits (digital) R-IoT=12, BITalino = 10, IMU/bsp = 16
-    
+
     Returns
     ----------
     fraction of area covered by the signal
 
-    
+
     """
-    data = self.data, 
+    data = self.data,
     bits = self.bits
-    frac = np.mean(np.absolute(data))/(2**bits) 
+    frac = np.mean(np.absolute(data))/(2**bits)
     return frac
 
 
