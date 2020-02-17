@@ -13,6 +13,7 @@ def r_peak_intervals(data, sampling_rate):
 
     Returns
     ----------
+    peaks : timestamps of R-peaks
     r_intervals : R-to-R peak intervals in milliseconds
     """
     peaks = bsnb.detect_r_peaks(data, sampling_rate, time_units=True, plot_result=False)
@@ -20,7 +21,7 @@ def r_peak_intervals(data, sampling_rate):
     intervals = [peaks[0][i] - peaks[0][i-1] for i in range(1,len(peaks[0]))]
     r_intervals = (np.array(intervals) * 1000).astype(int)
 
-    return r_intervals
+    return peaks[0], r_intervals
 
 def hrv_features(intervals):
     """Calculates heart rate variability features from R-to-R peak intervals
