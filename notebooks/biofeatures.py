@@ -4,12 +4,11 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 import threading
 
-def set_data(B):
-    global resp_data
-    B.data = resp_data[-B.buffer_length:]
-
 # Breathing
 class breathing(object):
+    """
+    Object containing breathing features, buffered data, signal properties and flags
+    """
 
     def __init__(self, data, buffer_length = 1000, srate = 200, bits = 12):
         self.buffer_length = buffer_length 
@@ -27,7 +26,6 @@ class breathing(object):
         self.feature_names = -1
         
         # Flags
-        self.WU = False #TODO remove
         self.is_warmed_up = False
         self.update_data_flag = True
         
@@ -36,7 +34,7 @@ class breathing(object):
 
     def update_loop(self):
         """
-        Launches a recursive loop to update
+        Launches a recursive loop to update the feature computation
         """
         if self.update_data_flag:
             self.timerT = threading.Timer(0.5, self.update_loop)
@@ -56,6 +54,9 @@ class breathing(object):
 
         
     def set_data(self, data):
+        """
+        Stores data into the class attribute
+        """
         self.data = data
         
     def resp_intervals(self, data, last_breath = False):
@@ -161,7 +162,7 @@ class breathing(object):
 
     # Amplitudes
     def calc_amplitudes(self, data):
-        # TODO stop update data between interval and amplitude
+        # TODO guarantee stop update data between interval and amplitude
         """Calculates respiration intervals and indicates inhale/exhale
         Parameters
         ----------
