@@ -3,6 +3,7 @@ import biosignalsnotebooks as bsnb
 from sklearn.linear_model import LinearRegression
 import numpy as np
 import threading
+import pyhrv
 
 # Breathing
 class breathing(object):
@@ -225,61 +226,101 @@ def lastpoint_linreg(data, samples = 100, sampling_rate = 200):
     return reg.coef_[0], reg.intercept_
 
 # HRV
-#import pyhrv
-#def r_peak_intervals(data, sampling_rate):
-#    """ Calculates R-to-R peak intervals from raw ECG signal
-#    ----------
-#    data: raw ECG signal
-#
-#    sampling_rate: sampling rate of ECG recording
-#
-#    Returns
-#    ----------
-#    r_intervals : R-to-R peak intervals in milliseconds
-#    """
-#    peaks = bsnb.detect_r_peaks(data, sampling_rate, time_units=True, plot_result=False)
-#
-#    intervals = [peaks[0][i] - peaks[0][i-1] for i in range(1,len(peaks[0]))]
-#    r_intervals = (np.array(intervals) * 1000).astype(int)
-#
-#    return r_intervals
-#
-#def hrv_features(intervals):
-#    """Calculates heart rate variability features from R-to-R peak intervals
-#    ----------
-#    intervals : R-to-R peak intervals calculated from ECG signal
-#
-#    Returns
-#    ----------
-#    features : dictionary containing the calculated time and frequency domain features
-#    """
-#    features = {}
-#
-#    rr_features = pyhrv.time_domain.nni_parameters(nni=intervals)
-#    hr_features = pyhrv.time_domain.hr_parameters(nni=intervals)
-#    rmssd = pyhrv.time_domain.rmssd(nni=intervals)
-#    freq_features = pyhrv.frequency_domain.welch_psd(nni=intervals, show=False, mode='dev')
-#
-#    features.update({'nni_mean': rr_features['nni_mean'], 'hr_mean': hr_features['hr_mean'],
-#                    'hr_std': hr_features['hr_std'], 'rmssd': rmssd['rmssd'],
-#                    'lf': freq_features[0]['fft_abs'][1], 'hf': freq_features[0]['fft_abs'][2],
-#                    'LF/HF ratio': freq_features[0]['fft_ratio']})
-#
-#    return features
-#
-#def detect_trend(features):
-#    """Calculates whether the overall trend in the features is increasing or decreasing
-#        by fitting a linear function to the feature array
-#    ----------
-#    features : 1-D array of HRV features
-#
-#    Returns
-#    ----------
-#    trend :  < 0 if the overall trend is decreasing
-#             > 0 if the overall trend is increasing
-#    """
-#    size = np.arange(0,len(features))
-#    feature_array = np.array(features)
-#    trend = np.polyfit(size, feature_array, 1)
-#    return trend[0]
-#
+class hrv(object):
+    """
+    Object containing hrv features, buffered data, other properties
+    """
+
+    def __init__(self, data, buffer_length = 1000, srate = 1000):
+        self.buffer_length = buffer_length
+        self.srate = srate
+
+        # Feature data
+        self.data = data
+        self.peaks = []
+        self.r_intervals = []
+        self.features = []
+        self.feature_names = []
+        self.current_trends = []
+
+        # Flags
+        self.update_data_flag = True
+        self.is_warmed_up = False
+
+    def update_loop(self):
+        """
+        Launches a recursive loop to update the feature computation
+        """
+        if self.update_data_flag:
+            self.update_timer = threading.Timer(0.5, self.update_loop)
+            self.update_timer.start()
+            
+        data = self.data.copy()
+
+        try:
+            self.r_peak_intervals(data)
+            self.hrv_features()
+            print(self.features)
+            self.detect_trends()
+            print(self.current_trends)
+        except:
+            print("HRV update loop error")
+            raise
+
+    def set_data(self, data):
+        """
+        Stores data in the class attribute
+        """
+        self.data = data
+
+    def r_peak_intervals(self, data):
+        """
+        Calculates R-to-R peak intervals from raw ECG data
+        """
+        peaks = bsnb.detect_r_peaks(data, self.srate, time_units=True, plot_result=False)
+
+        intervals = [peaks[0][i] - peaks[0][i-1] for i in range(1,len(peaks[0]))]
+        r_intervals = (np.array(intervals) * 1000).astype(int)
+
+        self.peaks = peaks
+        self.r_intervals = r_intervals
+
+    def hrv_features(self):
+        """
+        Calculates heart rate variability features from R-to-R peak intervals
+        """
+        new_features = {}
+
+        rr_features = pyhrv.time_domain.nni_parameters(nni=self.r_intervals)
+        hr_features = pyhrv.time_domain.hr_parameters(nni=self.r_intervals)
+        rmssd = pyhrv.time_domain.rmssd(nni=self.r_intervals)
+        freq_features = pyhrv.frequency_domain.welch_psd(nni=self.r_intervals, show=False, mode='dev')
+
+        new_features.update({'nni_mean': rr_features['nni_mean'], 'hr_mean': hr_features['hr_mean'],
+                    'hr_std': hr_features['hr_std'], 'rmssd': rmssd['rmssd'],
+                    'lf': freq_features[0]['fft_abs'][1], 'hf': freq_features[0]['fft_abs'][2],
+                    'LF/HF ratio': freq_features[0]['fft_ratio']})
+
+        self.features = self.features + [new_features]
+        self.feature_names = new_features.keys()
+
+
+    def detect_trends(self, max_samples = 60):
+        """Calculates whether the overall trend in the features is increasing or decreasing
+           by fitting a linear function to the feature array
+
+        trend :  < 0 if the overall trend is decreasing
+                 > 0 if the overall trend is increasing
+        """
+        trends = {}
+
+        if len(self.features) > 1:
+
+            for key in self.feature_names:
+                feats = [f[key] for f in self.features][-max_samples:]
+                size = np.arange(0,len(feats))
+                feature_array = np.array(feats)
+                trend = np.polyfit(size, feature_array, 1)
+                trends.update({key: trend[0]})
+
+                self.current_trends = trends
