@@ -35,14 +35,18 @@ class breathing(object):
 
     def update_loop(self):
         """
-        Launches a recursive loop to update the feature computation
+        Launches a recursive loop to update the feature computation:
+        1) Breathing intervals
+        2) Breathing features (average breath, inhale, exhale)
+        3) Amplitudes
+        4) Generic (area, linear regression, etc.) 
         """
         if self.update_data_flag:
             self.timerT = threading.Timer(0.5, self.update_loop)
 
         self.count_updates = self.count_updates + 1
         self.timerT.start()
-        data = self.data
+        data = (self.data).copy()
 
         try:
             self.resp_intervals(data, last_breath=False)
@@ -185,7 +189,7 @@ class breathing(object):
 # Generic
 #########
 
-def area_fraction(self):
+def area_fraction(data, bits):
     """Calculates the area fraction covered by the data
     Parameters
     ----------
@@ -199,8 +203,6 @@ def area_fraction(self):
 
 
     """
-    data = self.data,
-    bits = self.bits
     frac = np.mean(np.absolute(data))/(2**bits)
     return frac
 
