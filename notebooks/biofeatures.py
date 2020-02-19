@@ -26,6 +26,9 @@ class breathing(object):
         self.filtered = -1
         self.feature_names = -1
 
+        self.last_breath = -1
+        self.last_is_inhale = True
+
         # Flags
         self.is_warmed_up = False
         self.update_data_flag = True
@@ -39,7 +42,7 @@ class breathing(object):
         1) Breathing intervals
         2) Breathing features (average breath, inhale, exhale)
         3) Amplitudes
-        4) Generic (area, linear regression, etc.) 
+        4) Generic (area, linear regression, etc.)
         """
         if self.update_data_flag:
             self.timerT = threading.Timer(0.5, self.update_loop)
@@ -49,7 +52,7 @@ class breathing(object):
         data = (self.data).copy()
 
         try:
-            self.resp_intervals(data, last_breath=False)
+            self.resp_intervals(data)
             self.resp_features()
             print(self.features)
             self.calc_amplitudes(data)
@@ -64,15 +67,13 @@ class breathing(object):
         """
         self.data = data
 
-    def resp_intervals(self, data, last_breath = False):
+    def resp_intervals(self, data):
         """Calculates respiration intervals and indicates inhale/exhale
         Parameters
         ----------
         data : breathing signal to be processed
 
         sampling_rate: sampling rate of breathing signal
-
-        last_breath : flag that indicates whether single/mult breath analysis is requested
 
         Returns
         ----------
@@ -86,27 +87,26 @@ class breathing(object):
         self.filtered = filtered_signal
         self.resp_rate = inst_resp_rate
 
-
         signal_diff = np.diff(filtered_signal)
         signal_signum = signal_diff > 0
 
         resp_changes = np.append(np.where(signal_signum[:-1] != signal_signum[1:])[0], [len(signal_signum) - 1])
         self.resp_changes = resp_changes
 
-        if not last_breath:
+        resp_intervals = np.append([0], resp_changes)
+        interval_lengths = np.diff(resp_intervals)
+        interval_breathe_in = [signal_signum[i] for i in resp_changes]
+        self.interval_lengths, self.interval_breathe_in = interval_lengths, interval_breathe_in
 
-            resp_intervals = np.append([0], resp_changes)
-            interval_lengths = np.diff(resp_intervals)
-            interval_breathe_in = [signal_signum[i] for i in resp_changes]
-            self.interval_lengths, self.interval_breathe_in = interval_lengths, interval_breathe_in
-
+        last_interval = -1
+        if len(resp_changes) > 1:
+            last_interval = resp_changes[-1] - resp_changes[-2]
         else:
-            if len(resp_changes) > 1:
-                last_interval = resp_changes[-1] - resp_changes[-2]
-            else:
-                last_interval = resp_changes[-1]
+            last_interval = resp_changes[-1]
 
-            self.interval_lengths, self.interval_breathe_in = last_interval, signal_signum[resp_changes[-1]]
+        self.last_breath = last_interval
+        self.last_is_inhale = signal_signum[resp_changes[-1]]
+
 
 
     def resp_features(self):
@@ -125,7 +125,9 @@ class breathing(object):
         features: dictionary containing the calculated features
                 - breath_avg_len: average breath length in seconds
                 - inhale_duration: total duration of inhaling intervals in data in seconds
+                - avg_inhale: average duration of inhale in seconds
                 - exhale_duration: total duration of exhaling intervals in data in seconds
+                - avg_exhale: average duration of exhale in seconds
                 - inhale_exhale_ratio: ratio of inhalation to exhalation
         """
         resp_intervals = self.interval_lengths
@@ -157,9 +159,14 @@ class breathing(object):
 
         in_out_ratio = breathe_in_len/breathe_out_len
 
+        inhale_dur = round(breathe_in_len / sampling_rate,2)
+        exhale_dur = round(breathe_out_len / sampling_rate,2)
+
         features = {'breath_avg_len': round(avg_breath,2),
-                    'inhale_duration': round(breathe_in_len / sampling_rate,2) ,
-                    'exhale_duration': round(breathe_out_len / sampling_rate,2),
+                    'inhale_duration': inhale_dur,
+                    'avg_inhale': round(inhale_dur / len([x for x in is_inhalation if x]),2),
+                    'exhale_duration': exhale_dur,
+                    'avg_exhale': round(exhale_dur / len([x for x in is_inhalation if not x]),2),
                     'inhale_exhale_ratio': round(in_out_ratio,2)}
 
         self.feature_names = features.keys()
@@ -255,16 +262,15 @@ class hrv(object):
         """
         if self.update_data_flag:
             self.update_timer = threading.Timer(0.5, self.update_loop)
-            self.update_timer.start()
-            
+        self.update_timer.start()
+
         data = self.data.copy()
 
         try:
             self.r_peak_intervals(data)
             self.hrv_features()
-            print(self.features)
+            print(self.features[-5:])
             self.detect_trends()
-            print(self.current_trends)
         except:
             print("HRV update loop error")
             raise
@@ -298,10 +304,13 @@ class hrv(object):
         rmssd = pyhrv.time_domain.rmssd(nni=self.r_intervals)
         freq_features = pyhrv.frequency_domain.welch_psd(nni=self.r_intervals, show=False, mode='dev')
 
-        new_features.update({'nni_mean': rr_features['nni_mean'], 'hr_mean': hr_features['hr_mean'],
-                    'hr_std': hr_features['hr_std'], 'rmssd': rmssd['rmssd'],
-                    'lf': freq_features[0]['fft_abs'][1], 'hf': freq_features[0]['fft_abs'][2],
-                    'LF/HF ratio': freq_features[0]['fft_ratio']})
+        new_features.update({'nni_mean': round(rr_features['nni_mean'], 2),
+                            'hr_mean': round(hr_features['hr_mean'], 2),
+                            'hr_std': round(hr_features['hr_std'], 2),
+                            'rmssd': round(rmssd['rmssd'], 2),
+                            'lf': round(freq_features[0]['fft_abs'][1], 2),
+                            'hf': round(freq_features[0]['fft_abs'][2], 2),
+                            'LF/HF ratio': round(freq_features[0]['fft_ratio'], 2)})
 
         self.features = self.features + [new_features]
         self.feature_names = new_features.keys()
