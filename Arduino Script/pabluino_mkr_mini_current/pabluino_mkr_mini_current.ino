@@ -8,7 +8,6 @@ p_sanches Serverbit code
 */
 
 
-
 #include <MKRMotorCarrier.h>
 #include <Wire.h>
 #include "Adafruit_MPRLS.h"
@@ -33,11 +32,16 @@ char packetBuffer[255]; //buffer to hold incoming packet
 
 WiFiUDP Udp;
 
+// Listening to IPs (Servers: Processing, python) 
 const IPAddress serverIp(192, 168, 0, 101); // 192, 168, 0, 140
 const unsigned int serverPort = 32000;
 
 const IPAddress pythonIp(192, 168, 0, 101);
 const unsigned int pythonPort = 31000;
+
+
+// My Arduino IP
+IPAddress ip(192, 168, 0, 110);    
 
 
 unsigned long time_now = 0; //in order to keep the time so that we can simulate delay() without blocking the loop() function
@@ -73,6 +77,9 @@ if (! mpr.begin()) {
     }
   }
   Serial.println("Found MPRLS sensor");
+
+// Establish Arduino IP
+  WiFi.config(ip);
 
 // attempt to connect to WiFi network:
   while ( status != WL_CONNECTED) {
