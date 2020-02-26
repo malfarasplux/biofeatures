@@ -27,4 +27,5 @@ Threshold is based on RAW data resolution for BITalino (10 bit --> 1024).
 #### Alternative
 * [OSC](https://flows.nodered.org/node/node-red-contrib-osc)    
 * [Music](https://flows.nodered.org/node/node-red-contrib-music)  
+* [SuperCollider](https://supercollider.github.io/)
 A beep can also be created by sending a music kick OSC command to SuperCollider  
