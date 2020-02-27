@@ -5,7 +5,7 @@ ECG is set up as RAW A1.
 Threshold is based on RAW data resolution for BITalino (10 bit --> 1024).  
 
 
-* OpenSignals_TCP-JS-hrbeep [flow](https://github.com/malfarasplux/biofeatures/blob/master/node-red/OpenSignals_TCP-JS-hrbeep/OpenSignals_TCP-JS-hrbeep.json)  
+* OpenSignals_TCP-JS-hrbeep [flow](https://github.com/malfarasplux/biofeatures/blob/master/node-red/OpenSignals_TCP-JS-hrbeep/hrbeep.json)  
 
 ![Flowimg](/img/flows/flow_hrbeep.jpg)
 
