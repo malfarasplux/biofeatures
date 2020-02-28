@@ -50,6 +50,8 @@ int period = 20;  //how often in miliseconds to send the pressure to the server
 unsigned long time_now_connect_server = 0; //in order to keep the time so that we can simulate delay() without blocking the loop() function
 int period_connect_server = 5000;  //how often in miliseconds to reconnect actuator to server
 
+bool change_actuation = true;
+
 void setup() {
   // put your setup code here, to run once:
 Serial.begin(9600);
@@ -146,19 +148,19 @@ void loop() {
     }
 
 
-    if((inflatePower>=-100)&&(inflatePower<=-11))
+    if(change_actuation&&(inflatePower>=-100)&&(inflatePower<=-11))
     {
           deflate();
     
       }
 
-    if ((inflatePower>-11)&&(inflatePower<11))
+    if (change_actuation&&(inflatePower>-11)&&(inflatePower<11))
     {
           hold();
     
       }
 
-    if ((inflatePower>=11)&&(inflatePower<=100))
+    if (change_actuation&&(inflatePower>=11)&&(inflatePower<=100))
     {
           inflate();
       }
@@ -166,18 +168,18 @@ void loop() {
     //we send the pressure in a OSC message to the server every some miliseconds, specified in the variable 'period'
     
     
-    if(millis() > time_now + period){
+    /*if(millis() > time_now + period){
         time_now = millis();
         sendOSCPressure(getPressure());
-    }
+    }*/
 
     //this is just while Pavel does not add physical buttons! WHen he does, delete this code
-     if(millis() > time_now_connect_server + period_connect_server){
+     /*if(millis() > time_now_connect_server + period_connect_server){
         time_now_connect_server = millis();
         sendOSCPressure(getPressure());
         connectToServer();
         delay(50);
-    }
+    }*/
      
 }
 
@@ -196,9 +198,25 @@ void routeInflate(OSCMessage &msg) {
     //get that float
     float data = msg.getFloat(0);
 
+    if(data >= 0){
+      Serial.println("Message received: Inflate");
+    }
+    if(data < 0){
+      Serial.println("Message received: Deflate");
+    }
+
+    if(((int) data) != inflatePower){
+      change_actuation = true;
+    }
+    else {
+      change_actuation = false;
+    }
+    
     //Serial.println(data);
     inflatePower = (int) data;
-
+  }
+  else {
+    Serial.println("Message does not contain a float");
   }
 }
 
