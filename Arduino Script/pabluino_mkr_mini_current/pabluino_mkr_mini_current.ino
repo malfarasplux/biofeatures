@@ -33,15 +33,15 @@ char packetBuffer[255]; //buffer to hold incoming packet
 WiFiUDP Udp;
 
 // Listening to IPs (Servers: Processing, python) 
-const IPAddress serverIp(192, 168, 0, 101); // 192, 168, 0, 140
+const IPAddress serverIp(192, 168, 0, 100); // 192, 168, 0, 140
 const unsigned int serverPort = 32000;
 
-const IPAddress pythonIp(192, 168, 0, 101);
+const IPAddress pythonIp(192, 168, 0, 100);
 const unsigned int pythonPort = 31000;
 
 
 // My Arduino IP
-IPAddress ip(192, 168, 0, 110);    
+IPAddress ip(192, 168, 0, 220);    
 
 
 unsigned long time_now = 0; //in order to keep the time so that we can simulate delay() without blocking the loop() function
@@ -168,18 +168,18 @@ void loop() {
     //we send the pressure in a OSC message to the server every some miliseconds, specified in the variable 'period'
     
     
-    /*if(millis() > time_now + period){
+    if(millis() > time_now + period){
         time_now = millis();
         sendOSCPressure(getPressure());
-    }*/
+    }
 
     //this is just while Pavel does not add physical buttons! WHen he does, delete this code
-     /*if(millis() > time_now_connect_server + period_connect_server){
+     if(millis() > time_now_connect_server + period_connect_server){
         time_now_connect_server = millis();
         sendOSCPressure(getPressure());
         connectToServer();
         delay(50);
-    }*/
+    }
      
 }
 
@@ -274,7 +274,22 @@ float getPressure()
     //Serial.print(" ");
     //Serial.print("Pressure (PSI): "); 
     //Serial.println(pressure_hPa / 68.947572932); 
-    return mpr.readPressure();
+
+    //stop inflatable when the pressure is getting too high
+    if (pressure_hPa > 1200 && inflatePower > 0){
+      Serial.println("Pressure too high");
+      inflatePower = 0;
+      hold();
+    }
+
+    //pad is fully deflated
+    if (pressure_hPa < 800 && inflatePower < 0){
+      Serial.println("Fully deflated");
+      inflatePower = 0;
+      hold();
+    }
+    
+    return pressure_hPa;
 }  
 
 void sendOSCPressure(float pressure) {
