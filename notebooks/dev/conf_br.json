@@ -1,0 +1,482 @@
+[
+    {
+        "id": "76d91f07.ac3a6",
+        "type": "tab",
+        "label": "conf_br",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b2882fee.7ac2d",
+        "type": "ui_slider",
+        "z": "76d91f07.ac3a6",
+        "name": "BrF slider",
+        "label": "BrF",
+        "tooltip": "",
+        "group": "a5b0a529.b3b448",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "min": "1",
+        "max": "2",
+        "step": "0.1",
+        "x": 260,
+        "y": 140,
+        "wires": [
+            [
+                "6149f037.d7eaa",
+                "972e9687.9d4eb8"
+            ]
+        ]
+    },
+    {
+        "id": "2b7df027.bbb22",
+        "type": "debug",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.returnData[\"20:17:09:18:46:98\"]",
+        "targetType": "msg",
+        "x": 410,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "db2bde85.e16f9",
+        "type": "comment",
+        "z": "76d91f07.ac3a6",
+        "name": "Data from Device",
+        "info": "",
+        "x": 100,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "4b7e5777.048538",
+        "type": "switch",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "property": "payload.returnData[\"20:17:09:18:46:98\"]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 110,
+        "y": 420,
+        "wires": [
+            [
+                "2b7df027.bbb22",
+                "14d854a8.8aff7b"
+            ]
+        ]
+    },
+    {
+        "id": "14d854a8.8aff7b",
+        "type": "function",
+        "z": "76d91f07.ac3a6",
+        "name": "last CH array_slice",
+        "func": "var values = msg.payload.returnData[\"20:17:09:18:46:98\"];\nmsg.payload=values.map(val => val[val.length-1]);\nmsg.payload=msg.payload.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 460,
+        "wires": [
+            [
+                "2978536a.5767bc",
+                "f8ca0d8a.db5f2"
+            ]
+        ]
+    },
+    {
+        "id": "2978536a.5767bc",
+        "type": "debug",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 590,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "f8ca0d8a.db5f2",
+        "type": "function",
+        "z": "76d91f07.ac3a6",
+        "name": "avg",
+        "func": "var sum = 0;\nelmt = msg.payload.split(\",\");\nfor( var i = 0; i < elmt.length; i++ ){\n    sum += parseInt( elmt[i], 10 ); //don't forget to add the base\n}\n\nvar avg = sum/elmt.length;\nmsg.payload = avg.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 550,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ce1e523f.8aaa2",
+        "type": "inject",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 100,
+        "wires": [
+            [
+                "b2882fee.7ac2d"
+            ]
+        ]
+    },
+    {
+        "id": "b4cb0504.89b8c8",
+        "type": "osc",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "path": "/brf/",
+        "metadata": false,
+        "x": 830,
+        "y": 180,
+        "wires": [
+            [
+                "2b4b0c9b.1327b4"
+            ]
+        ]
+    },
+    {
+        "id": "6149f037.d7eaa",
+        "type": "ui_gauge",
+        "z": "76d91f07.ac3a6",
+        "name": "gauge slider val",
+        "group": "a5b0a529.b3b448",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "breathing factor",
+        "label": "msgs",
+        "format": "{{value}}",
+        "min": "1",
+        "max": "2",
+        "colors": [
+            "#5e9d17",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 420,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "b15c40ca.0c62",
+        "type": "ui_switch",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "label": "A",
+        "tooltip": "",
+        "group": "a5b0a529.b3b448",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 1010,
+        "y": 160,
+        "wires": [
+            [
+                "c3acd6ca.463f98",
+                "350a3a7.87a64c6"
+            ]
+        ]
+    },
+    {
+        "id": "350a3a7.87a64c6",
+        "type": "ui_switch",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "label": "B",
+        "tooltip": "",
+        "group": "a5b0a529.b3b448",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "false",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 1030,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a5f8d030.42dbb",
+        "type": "ui_dropdown",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "a5b0a529.b3b448",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "options": [
+            {
+                "label": "None",
+                "value": "None",
+                "type": "str"
+            },
+            {
+                "label": "BrF",
+                "value": "BrF",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "",
+        "x": 280,
+        "y": 200,
+        "wires": [
+            [
+                "26725d47.357832"
+            ]
+        ]
+    },
+    {
+        "id": "c3acd6ca.463f98",
+        "type": "ui_switch",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "label": "C",
+        "tooltip": "",
+        "group": "a5b0a529.b3b448",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "false",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 1050,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2b4b0c9b.1327b4",
+        "type": "udp out",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "addr": "127.0.0.1",
+        "iface": "",
+        "port": "31000",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 820,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "1e2cf84c.e841d8",
+        "type": "inject",
+        "z": "76d91f07.ac3a6",
+        "name": "routine init",
+        "topic": "",
+        "payload": "{\"routine\":\"None\",\"brf\":1}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "26725d47.357832",
+        "type": "function",
+        "z": "76d91f07.ac3a6",
+        "name": "routine",
+        "func": "var routine = context.get('routine')||\"None\";\nvar brf = context.get('brf')||1.0;\nroutine = msg.payload;\n\nmsg.payload = {\n    \"routine\":routine,\n    \"brf\":brf}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "cb36962c.af0608",
+                "1f825460.7b416c"
+            ]
+        ]
+    },
+    {
+        "id": "fb79bb86.528b98",
+        "type": "debug",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 850,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "cb36962c.af0608",
+        "type": "change",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.routine",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 220,
+        "wires": [
+            [
+                "fb79bb86.528b98",
+                "b4cb0504.89b8c8"
+            ]
+        ]
+    },
+    {
+        "id": "1f825460.7b416c",
+        "type": "change",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.brf",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 160,
+        "wires": [
+            [
+                "fb79bb86.528b98",
+                "b4cb0504.89b8c8"
+            ]
+        ]
+    },
+    {
+        "id": "972e9687.9d4eb8",
+        "type": "function",
+        "z": "76d91f07.ac3a6",
+        "name": "brf",
+        "func": "var routine = context.get('routine')||\"None\";\nvar brf = context.get('brf')||1.0;\nbrf = msg.payload;\n\nmsg.payload = {\n    \"routine\":routine,\n    \"brf\":brf}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 160,
+        "wires": [
+            [
+                "1f825460.7b416c",
+                "cb36962c.af0608"
+            ]
+        ]
+    },
+    {
+        "id": "47c0be2e.ac9f1",
+        "type": "comment",
+        "z": "76d91f07.ac3a6",
+        "name": "Redefining routine and BrF over ui",
+        "info": "",
+        "x": 180,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "a5b0a529.b3b448",
+        "type": "ui_group",
+        "z": "",
+        "name": "OSC BrF",
+        "tab": "4fbf3652.690fb8",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "4fbf3652.690fb8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Visualize",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
