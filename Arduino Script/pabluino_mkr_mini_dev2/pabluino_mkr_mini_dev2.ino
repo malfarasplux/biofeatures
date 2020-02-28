@@ -163,6 +163,16 @@ void loop() {
         OSCMessage msg = bundleIN.getOSCMessage(0);
         //checkType(msg); // Type is FLOAT
         Serial.println(msg.getFloat(0));
+
+        int pos = 0;
+        int numMessages = bundleIN.size();
+        Serial.println("number of messages: ");
+        Serial.println(numMessages);
+        /*while (pos < numMessages){
+          msg = bundleIN.getOSCMessage(pos);
+          Serial.println(msg.getFloat(0));
+          pos += 1;
+        }*/
         
 
 //        Serial.println(msg);
