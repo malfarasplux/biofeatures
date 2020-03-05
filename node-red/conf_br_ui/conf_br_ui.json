@@ -222,7 +222,7 @@
         "once": false,
         "onceDelay": 0.1,
         "x": 90,
-        "y": 420,
+        "y": 540,
         "wires": [
             [
                 "d81554b5.6d9a78"
@@ -242,7 +242,7 @@
         "once": false,
         "onceDelay": 0.1,
         "x": 90,
-        "y": 460,
+        "y": 580,
         "wires": [
             [
                 "4e9dadde.74b124"
@@ -385,7 +385,7 @@
         "z": "76d91f07.ac3a6",
         "name": "",
         "group": "2b554225.6dd52e",
-        "order": 5,
+        "order": 8,
         "width": 0,
         "height": 0,
         "passthru": true,
@@ -398,7 +398,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 260,
-        "y": 420,
+        "y": 540,
         "wires": [
             [
                 "fd47011e.b91bc"
@@ -411,7 +411,7 @@
         "z": "76d91f07.ac3a6",
         "name": "",
         "group": "2b554225.6dd52e",
-        "order": 6,
+        "order": 9,
         "width": 0,
         "height": 0,
         "passthru": true,
@@ -424,7 +424,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 260,
-        "y": 460,
+        "y": 580,
         "wires": [
             [
                 "fd47011e.b91bc"
@@ -593,6 +593,21 @@
                 "type": "str"
             },
             {
+                "label": "random_inflation",
+                "value": "random_inflation",
+                "type": "str"
+            },
+            {
+                "label": "async_intervals",
+                "value": "async_intervals",
+                "type": "str"
+            },
+            {
+                "label": "async_breathing",
+                "value": "async_breathing",
+                "type": "str"
+            },
+            {
                 "label": "Inflate3",
                 "value": "inflate3",
                 "type": "str"
@@ -648,6 +663,144 @@
         "x": 920,
         "y": 60,
         "wires": []
+    },
+    {
+        "id": "c3f773aa.e98b",
+        "type": "inject",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "topic": "",
+        "payload": "async_intervals",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 440,
+        "wires": [
+            [
+                "344951c7.fe2eee"
+            ]
+        ]
+    },
+    {
+        "id": "344951c7.fe2eee",
+        "type": "ui_button",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "group": "2b554225.6dd52e",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "async_intervals",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "async_intervals",
+        "payloadType": "str",
+        "topic": "",
+        "x": 320,
+        "y": 440,
+        "wires": [
+            [
+                "fd47011e.b91bc"
+            ]
+        ]
+    },
+    {
+        "id": "4e2c6173.d6453",
+        "type": "inject",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "topic": "",
+        "payload": "async_breathing",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 480,
+        "wires": [
+            [
+                "71be6018.451ca"
+            ]
+        ]
+    },
+    {
+        "id": "71be6018.451ca",
+        "type": "ui_button",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "group": "2b554225.6dd52e",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "async_breathing",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "async_breathing",
+        "payloadType": "str",
+        "topic": "",
+        "x": 320,
+        "y": 480,
+        "wires": [
+            [
+                "fd47011e.b91bc"
+            ]
+        ]
+    },
+    {
+        "id": "9edecfda.85ed3",
+        "type": "inject",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "topic": "",
+        "payload": "random_inflation",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 400,
+        "wires": [
+            [
+                "34013e85.4f6752"
+            ]
+        ]
+    },
+    {
+        "id": "34013e85.4f6752",
+        "type": "ui_button",
+        "z": "76d91f07.ac3a6",
+        "name": "",
+        "group": "2b554225.6dd52e",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "random_inflation",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "random_inflation",
+        "payloadType": "str",
+        "topic": "",
+        "x": 320,
+        "y": 400,
+        "wires": [
+            [
+                "fd47011e.b91bc"
+            ]
+        ]
     },
     {
         "id": "a5b0a529.b3b448",
