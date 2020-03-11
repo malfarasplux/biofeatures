@@ -1,0 +1,1217 @@
+[
+    {
+        "id": "f701150d.a5a8f",
+        "type": "tab",
+        "label": "conf_br",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "18c69f4f.ee3c31",
+        "type": "osc",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "path": "/brf/",
+        "metadata": false,
+        "x": 670,
+        "y": 260,
+        "wires": [
+            [
+                "d11c4afb.04428",
+                "67a8094.d65e478",
+                "31ada336.a59624",
+                "33eaa4de.4518dc",
+                "cfe8e913.b0b178"
+            ]
+        ]
+    },
+    {
+        "id": "c1e02ba9.341ce",
+        "type": "ui_gauge",
+        "z": "f701150d.a5a8f",
+        "name": "gauge slider val",
+        "group": "8cca89b2.d42a",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "breathing factor",
+        "label": "msgs",
+        "format": "{{value}}",
+        "min": "1",
+        "max": "2",
+        "colors": [
+            "#5e9d17",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 680,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "d11c4afb.04428",
+        "type": "udp out",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "addr": "127.0.0.1",
+        "iface": "",
+        "port": "31000",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 900,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "f4e8083e.c88018",
+        "type": "comment",
+        "z": "f701150d.a5a8f",
+        "name": "Redefining routine and BrF over ui",
+        "info": "",
+        "x": 160,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "67a8094.d65e478",
+        "type": "udp out",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "addr": "192.168.0.100",
+        "iface": "",
+        "port": "31000",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 910,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "31ada336.a59624",
+        "type": "udp out",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "addr": "192.168.0.100",
+        "iface": "",
+        "port": "8338",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 910,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "e301504e.aaaf98",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "1.0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 80,
+        "wires": [
+            [
+                "85ec96ca.cc044"
+            ]
+        ]
+    },
+    {
+        "id": "6d5fbdbc.484754",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "1.2",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 120,
+        "wires": [
+            [
+                "a78b0240.acbd58"
+            ]
+        ]
+    },
+    {
+        "id": "b540fed3.be80a",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "None",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 280,
+        "wires": [
+            [
+                "f294bcee.0c5b7"
+            ]
+        ]
+    },
+    {
+        "id": "acf1340d.9e8cf8",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "breathing_biofeedback",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 140,
+        "y": 320,
+        "wires": [
+            [
+                "b8bc7d01.f4b5"
+            ]
+        ]
+    },
+    {
+        "id": "70c0d8f1.3658f",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "pulsating",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 100,
+        "y": 360,
+        "wires": [
+            [
+                "92c1fd3f.96d088"
+            ]
+        ]
+    },
+    {
+        "id": "85ec96ca.cc044",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "a00ca0ce.46d048",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "1.0",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "1.0",
+        "payloadType": "num",
+        "topic": "",
+        "x": 230,
+        "y": 80,
+        "wires": [
+            [
+                "42c8c377.e405dc"
+            ]
+        ]
+    },
+    {
+        "id": "92c1fd3f.96d088",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "2dcc52e0.dff9e6",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "pulsating",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "pulsating",
+        "payloadType": "str",
+        "topic": "",
+        "x": 240,
+        "y": 360,
+        "wires": [
+            [
+                "5300a869.5282c"
+            ]
+        ]
+    },
+    {
+        "id": "a78b0240.acbd58",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "a00ca0ce.46d048",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "1.2",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "1.2",
+        "payloadType": "num",
+        "topic": "",
+        "x": 230,
+        "y": 120,
+        "wires": [
+            [
+                "42c8c377.e405dc"
+            ]
+        ]
+    },
+    {
+        "id": "b8bc7d01.f4b5",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "2dcc52e0.dff9e6",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "breathing biofeedback",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "breathing_biofeedback",
+        "payloadType": "str",
+        "topic": "",
+        "x": 360,
+        "y": 320,
+        "wires": [
+            [
+                "5300a869.5282c"
+            ]
+        ]
+    },
+    {
+        "id": "f294bcee.0c5b7",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "2dcc52e0.dff9e6",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "None",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "None",
+        "payloadType": "str",
+        "topic": "",
+        "x": 230,
+        "y": 280,
+        "wires": [
+            [
+                "5300a869.5282c"
+            ]
+        ]
+    },
+    {
+        "id": "632a4f60.4e2ec",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "1.5",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 160,
+        "wires": [
+            [
+                "b3988753.467858"
+            ]
+        ]
+    },
+    {
+        "id": "b3988753.467858",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "a00ca0ce.46d048",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "1.5",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "1.5",
+        "payloadType": "num",
+        "topic": "",
+        "x": 230,
+        "y": 160,
+        "wires": [
+            [
+                "42c8c377.e405dc"
+            ]
+        ]
+    },
+    {
+        "id": "8114764f.9e4b58",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "2.0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 200,
+        "wires": [
+            [
+                "246fcde6.7a706a"
+            ]
+        ]
+    },
+    {
+        "id": "246fcde6.7a706a",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "a00ca0ce.46d048",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "2.0",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "2.0",
+        "payloadType": "num",
+        "topic": "",
+        "x": 230,
+        "y": 200,
+        "wires": [
+            [
+                "42c8c377.e405dc"
+            ]
+        ]
+    },
+    {
+        "id": "42c8c377.e405dc",
+        "type": "ui_slider",
+        "z": "f701150d.a5a8f",
+        "name": "BrF slider",
+        "label": "BrF",
+        "tooltip": "",
+        "group": "8cca89b2.d42a",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "",
+        "min": "1",
+        "max": "2",
+        "step": "0.1",
+        "x": 400,
+        "y": 140,
+        "wires": [
+            [
+                "18c69f4f.ee3c31",
+                "c1e02ba9.341ce"
+            ]
+        ]
+    },
+    {
+        "id": "33eaa4de.4518dc",
+        "type": "debug",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 890,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "5300a869.5282c",
+        "type": "ui_dropdown",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "2dcc52e0.dff9e6",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "options": [
+            {
+                "label": "None",
+                "value": "None",
+                "type": "str"
+            },
+            {
+                "label": "Breathing biofeedback",
+                "value": "breathing_biofeedback",
+                "type": "str"
+            },
+            {
+                "label": "Pulsating",
+                "value": "pulsating",
+                "type": "str"
+            },
+            {
+                "label": "random_inflation",
+                "value": "random_inflation",
+                "type": "str"
+            },
+            {
+                "label": "async_intervals",
+                "value": "async_intervals",
+                "type": "str"
+            },
+            {
+                "label": "async_breathing",
+                "value": "async_breathing",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "",
+        "x": 580,
+        "y": 383,
+        "wires": [
+            [
+                "18c69f4f.ee3c31"
+            ]
+        ]
+    },
+    {
+        "id": "cfe8e913.b0b178",
+        "type": "udp out",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "addr": "127.0.0.1",
+        "iface": "",
+        "port": "8338",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 890,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "f280554a.2feff8",
+        "type": "comment",
+        "z": "f701150d.a5a8f",
+        "name": "Conf msg going to server",
+        "info": "",
+        "x": 910,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "8763ae07.608e18",
+        "type": "comment",
+        "z": "f701150d.a5a8f",
+        "name": "Conf msg going to localhost",
+        "info": "",
+        "x": 920,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "5844a872.b20748",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "async_intervals",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 440,
+        "wires": [
+            [
+                "aeed5c24.6ee138"
+            ]
+        ]
+    },
+    {
+        "id": "aeed5c24.6ee138",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "2dcc52e0.dff9e6",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "async_intervals",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "async_intervals",
+        "payloadType": "str",
+        "topic": "",
+        "x": 320,
+        "y": 440,
+        "wires": [
+            [
+                "5300a869.5282c"
+            ]
+        ]
+    },
+    {
+        "id": "64230793.ce725",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "async_breathing",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 480,
+        "wires": [
+            [
+                "eae7862f.f6c618"
+            ]
+        ]
+    },
+    {
+        "id": "eae7862f.f6c618",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "2dcc52e0.dff9e6",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "async_breathing",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "async_breathing",
+        "payloadType": "str",
+        "topic": "",
+        "x": 320,
+        "y": 480,
+        "wires": [
+            [
+                "5300a869.5282c"
+            ]
+        ]
+    },
+    {
+        "id": "b70f1535.9d076",
+        "type": "inject",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "topic": "",
+        "payload": "random_inflation",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 400,
+        "wires": [
+            [
+                "c4ba9e5c.59471"
+            ]
+        ]
+    },
+    {
+        "id": "c4ba9e5c.59471",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "2dcc52e0.dff9e6",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "random_inflation",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "random_inflation",
+        "payloadType": "str",
+        "topic": "",
+        "x": 320,
+        "y": 400,
+        "wires": [
+            [
+                "5300a869.5282c"
+            ]
+        ]
+    },
+    {
+        "id": "f551ba17.113e1",
+        "type": "ui_text_input",
+        "z": "f701150d.a5a8f",
+        "name": "Inflate input",
+        "label": "",
+        "tooltip": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 1,
+        "width": "2",
+        "height": "1",
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "x": 90,
+        "y": 1020,
+        "wires": [
+            [
+                "fced9.b926d9278"
+            ]
+        ]
+    },
+    {
+        "id": "c897be54.261e3",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Inflate",
+        "func": "var val = flow.get(\"inflate_val\") || \"3\";\n\nmsg.payload = \"Inflate\".concat(val);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 640,
+        "wires": [
+            [
+                "18c69f4f.ee3c31"
+            ]
+        ]
+    },
+    {
+        "id": "39cd8667.0ccf22",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 2,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "Inflate",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 230,
+        "y": 640,
+        "wires": [
+            [
+                "c897be54.261e3"
+            ]
+        ]
+    },
+    {
+        "id": "fced9.b926d9278",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Inflate value",
+        "func": "var inf_val = msg.payload.toString();\n\nflow.set(\"inflate_val\", inf_val);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 1020,
+        "wires": [
+            [
+                "c3d277a6.c531f"
+            ]
+        ]
+    },
+    {
+        "id": "d69d30e9.3ba6f8",
+        "type": "ui_text_input",
+        "z": "f701150d.a5a8f",
+        "name": "Deflate input",
+        "label": "",
+        "tooltip": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 3,
+        "width": "2",
+        "height": "1",
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "x": 90,
+        "y": 1064,
+        "wires": [
+            [
+                "3134136a.44d96c"
+            ]
+        ]
+    },
+    {
+        "id": "3134136a.44d96c",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Deflate value",
+        "func": "var def_val = msg.payload.toString();\n\nflow.set(\"deflate_val\", def_val);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 1064,
+        "wires": [
+            [
+                "e7041dd7.5011a8"
+            ]
+        ]
+    },
+    {
+        "id": "d3b7ba70.4c7ba",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 4,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "Deflate",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 240,
+        "y": 680,
+        "wires": [
+            [
+                "aa5a5970.e0fdf"
+            ]
+        ]
+    },
+    {
+        "id": "aa5a5970.e0fdf",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Deflate",
+        "func": "var val = flow.get(\"deflate_val\") || \"3\";\n\nmsg.payload = \"Deflate\".concat(val);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 460,
+        "y": 680,
+        "wires": [
+            [
+                "18c69f4f.ee3c31"
+            ]
+        ]
+    },
+    {
+        "id": "e7041dd7.5011a8",
+        "type": "debug",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 620,
+        "y": 1064,
+        "wires": []
+    },
+    {
+        "id": "c3d277a6.c531f",
+        "type": "debug",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 620,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "bdf1620d.ce8f48",
+        "type": "ui_text_input",
+        "z": "f701150d.a5a8f",
+        "name": "Offset first",
+        "label": "",
+        "tooltip": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 5,
+        "width": "2",
+        "height": "1",
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "x": 90,
+        "y": 1140,
+        "wires": [
+            [
+                "61325fb0.9a22d8"
+            ]
+        ]
+    },
+    {
+        "id": "61325fb0.9a22d8",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Offset first value",
+        "func": "var val = msg.payload.toString();\n\nflow.set(\"offset_first\", val);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 420,
+        "y": 1140,
+        "wires": [
+            [
+                "dd1d75bb.4ef26"
+            ]
+        ]
+    },
+    {
+        "id": "dd1d75bb.4ef26",
+        "type": "debug",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 620,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "135b9e99.38b2b1",
+        "type": "ui_text_input",
+        "z": "f701150d.a5a8f",
+        "name": "Offset second",
+        "label": "",
+        "tooltip": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 6,
+        "width": "2",
+        "height": "1",
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "x": 100,
+        "y": 1180,
+        "wires": [
+            [
+                "d2442c0a.67274"
+            ]
+        ]
+    },
+    {
+        "id": "d2442c0a.67274",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Offset second value",
+        "func": "var val = msg.payload.toString();\n\nflow.set(\"offset_second\", val);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 1180,
+        "wires": [
+            [
+                "8cb49a7e.14b1f"
+            ]
+        ]
+    },
+    {
+        "id": "8cb49a7e.14b1f",
+        "type": "debug",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 620,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "e4c8b8ba.487278",
+        "type": "ui_text_input",
+        "z": "f701150d.a5a8f",
+        "name": "Offset duration",
+        "label": "",
+        "tooltip": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 7,
+        "width": "2",
+        "height": "1",
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "x": 100,
+        "y": 1220,
+        "wires": [
+            [
+                "1a5300ce.082187"
+            ]
+        ]
+    },
+    {
+        "id": "1a5300ce.082187",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Offset duration",
+        "func": "var val = msg.payload.toString();\n\nflow.set(\"offset_duration\", val);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 420,
+        "y": 1220,
+        "wires": [
+            [
+                "6cb19cef.3a196c"
+            ]
+        ]
+    },
+    {
+        "id": "6cb19cef.3a196c",
+        "type": "debug",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 620,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "5c913d0e.87b474",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 8,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "Offset",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 230,
+        "y": 720,
+        "wires": [
+            [
+                "26327ac3.6887d6"
+            ]
+        ]
+    },
+    {
+        "id": "26327ac3.6887d6",
+        "type": "function",
+        "z": "f701150d.a5a8f",
+        "name": "Offset",
+        "func": "var val_first = flow.get(\"offset_first\") || \"3\";\nvar val_second = flow.get(\"offset_second\") || \"6\";\nvar val_offset = flow.get(\"offset_duration\") || \"0\";\n\nvar message = [\"Offset\", val_first, val_second, val_offset];\n\nmsg.payload = message.join();\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 720,
+        "wires": [
+            [
+                "18c69f4f.ee3c31"
+            ]
+        ]
+    },
+    {
+        "id": "5fc1d481.e73e7c",
+        "type": "ui_dropdown",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "2dcc52e0.dff9e6",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "options": [
+            {
+                "label": "Actuator 1",
+                "value": "act1",
+                "type": "str"
+            },
+            {
+                "label": "Actuator 2",
+                "value": "act2",
+                "type": "str"
+            },
+            {
+                "label": "Both actuators",
+                "value": "act12",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "",
+        "x": 460,
+        "y": 820,
+        "wires": [
+            [
+                "18c69f4f.ee3c31"
+            ]
+        ]
+    },
+    {
+        "id": "e8c2c64b.8c325",
+        "type": "ui_button",
+        "z": "f701150d.a5a8f",
+        "name": "",
+        "group": "1a1f6ee.a3d5991",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Stop all actuators",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "stop_all",
+        "payloadType": "str",
+        "topic": "",
+        "x": 360,
+        "y": 560,
+        "wires": [
+            [
+                "18c69f4f.ee3c31"
+            ]
+        ]
+    },
+    {
+        "id": "8cca89b2.d42a",
+        "type": "ui_group",
+        "z": "",
+        "name": "OSC BrF",
+        "tab": "f5f5f6c2.363a28",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "a00ca0ce.46d048",
+        "type": "ui_group",
+        "z": "",
+        "name": "Send Breathing Factor Val",
+        "tab": "f5f5f6c2.363a28",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2dcc52e0.dff9e6",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sequence",
+        "tab": "f5f5f6c2.363a28",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "1a1f6ee.a3d5991",
+        "type": "ui_group",
+        "z": "",
+        "name": "Custom Sequences",
+        "tab": "f5f5f6c2.363a28",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "f5f5f6c2.363a28",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Visualize",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
