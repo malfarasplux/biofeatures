@@ -11,10 +11,13 @@ class breathing(object):
     Object containing breathing features, buffered data, signal properties and flags
     """
 
-    def __init__(self, data, buffer_length = 1000, srate = 200, bits = 12):
+    def __init__(self, data, buffer_length = 1000, srate = 200, bits = 12, breathing_factor = 1.5, hold_factor = 0.25):
         self.buffer_length = buffer_length
         self.srate = srate
         self.bits = bits
+
+        self.breathing_factor = breathing_factor
+        self.hold_factor = hold_factor
 
         # Feature data
         self.data = data
