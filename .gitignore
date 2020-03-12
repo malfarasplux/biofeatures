@@ -2,6 +2,7 @@
 __pycache__/
 backup/
 *.pyc
+*.DS_Store
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 */Processing
