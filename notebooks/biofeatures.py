@@ -11,13 +11,14 @@ class breathing(object):
     Object containing breathing features, buffered data, signal properties and flags
     """
 
-    def __init__(self, data, buffer_length = 1000, srate = 200, bits = 12, breathing_factor = 1.5, hold_factor = 0.25):
+    def __init__(self, data, buffer_length = 1000, srate = 200, bits = 12, breathing_factor = 1.5, hold_factor = 0.25, inflation_speed = 100.0):
         self.buffer_length = buffer_length
         self.srate = srate
         self.bits = bits
 
         self.breathing_factor = breathing_factor
         self.hold_factor = hold_factor
+        self.inflation_speed = inflation_speed
 
         # Feature data
         self.data = data
@@ -57,7 +58,7 @@ class breathing(object):
         try:
             self.resp_intervals(data)
             self.resp_features()
-            print(self.features)
+            #print(self.features)
             self.calc_amplitudes(data)
         except:
             print("RESP ERROR")
@@ -94,21 +95,28 @@ class breathing(object):
         signal_signum = signal_diff > 0
 
         resp_changes = np.append(np.where(signal_signum[:-1] != signal_signum[1:])[0], [len(signal_signum) - 1])
-        self.resp_changes = resp_changes
 
-        resp_intervals = np.append([0], resp_changes)
+        filtered_changes = []
+
+        for i in range(len(resp_changes) - 1):
+            if resp_changes[i+1] - resp_changes[i] > 150:
+                filtered_changes.append(resp_changes[i])
+
+        self.resp_changes = filtered_changes
+
+        resp_intervals = np.append([0], filtered_changes)
         interval_lengths = np.diff(resp_intervals)
-        interval_breathe_in = [signal_signum[i] for i in resp_changes]
+        interval_breathe_in = [signal_signum[i] for i in filtered_changes]
         self.interval_lengths, self.interval_breathe_in = interval_lengths, interval_breathe_in
 
         last_interval = -1
-        if len(resp_changes) > 1:
-            last_interval = resp_changes[-1] - resp_changes[-2]
+        if len(filtered_changes) > 1:
+            last_interval = filtered_changes[-1] - filtered_changes[-2]
         else:
-            last_interval = resp_changes[-1]
+            last_interval = filtered_changes[-1]
 
         self.last_breath = last_interval
-        self.last_is_inhale = signal_signum[resp_changes[-1]]
+        self.last_is_inhale = signal_signum[filtered_changes[-1]]
 
 
 
@@ -254,6 +262,7 @@ class hrv(object):
         self.features = []
         self.feature_names = []
         self.current_trends = []
+        self.baseline = 0
 
         # Flags
         self.update_data_flag = True
@@ -272,11 +281,10 @@ class hrv(object):
         try:
             self.r_peak_intervals(data)
             self.hrv_features()
-            print(self.features[-5:])
+            #print(self.features[-5:])
             self.detect_trends()
         except:
             print("HRV update loop error")
-            raise
 
     def set_data(self, data):
         """
@@ -318,6 +326,11 @@ class hrv(object):
         self.features = self.features + [new_features]
         self.feature_names = new_features.keys()
 
+        if len(self.features) > 300 and self.baseline == 0:
+            lfhf = [x['LF/HF ratio'] for x in self.features]
+            self.baseline = np.median(lfhf)
+            print("set baseline")
+
 
     def detect_trends(self, max_samples = 60):
         """Calculates whether the overall trend in the features is increasing or decreasing
@@ -337,4 +350,4 @@ class hrv(object):
                 trend = np.polyfit(size, feature_array, 1)
                 trends.update({key: trend[0]})
 
-                self.current_trends = trends
+            self.current_trends = trends
